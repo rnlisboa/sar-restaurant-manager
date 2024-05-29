@@ -12,3 +12,43 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Category {
+  id String @id @default(uuid())
+  name String
+
+  @@map("categories")
+  role Role[]
+}
+
+model Role{
+  id String @id @default(uuid())
+  name String
+  description String
+
+  category Category @relation(fields: [category_id], references: [id])
+
+
+  @@map("roles")
+  category_id String
+  users User[]
+}
+
+model User {
+  id String @id @default(uuid())
+  name String
+  lastname String
+  email String
+  password String
+  is_admin  Boolean
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  
+  @@unique([email])
+
+  role Role @relation(fields: [role_id], references: [id])
+
+  @@map("users")
+  role_id String
+}
+
