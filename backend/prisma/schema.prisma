@@ -34,14 +34,15 @@ model Role {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  name       String
-  lastname   String
-  email      String
-  password   String
-  is_admin   Boolean
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  id            String    @id @default(uuid())
+  name          String
+  lastname      String
+  email         String
+  password      String
+  is_admin      Boolean
+  profile_image String
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @default(now())
 
   role    Role    @relation(fields: [role_id], references: [id])
   role_id String
