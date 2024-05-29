@@ -14,41 +14,115 @@ datasource db {
 }
 
 model Category {
-  id String @id @default(uuid())
+  id   String @id @default(uuid())
   name String
+  role Role[]
 
   @@map("categories")
-  role Role[]
 }
 
-model Role{
-  id String @id @default(uuid())
-  name String
+model Role {
+  id          String @id @default(uuid())
+  name        String
   description String
 
-  category Category @relation(fields: [category_id], references: [id])
-
+  category    Category @relation(fields: [category_id], references: [id])
+  category_id String
+  users       User[]
 
   @@map("roles")
-  category_id String
-  users User[]
 }
 
 model User {
-  id String @id @default(uuid())
-  name String
-  lastname String
-  email String
-  password String
-  is_admin  Boolean
+  id         String    @id @default(uuid())
+  name       String
+  lastname   String
+  email      String
+  password   String
+  is_admin   Boolean
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
-  
-  @@unique([email])
 
-  role Role @relation(fields: [role_id], references: [id])
-
-  @@map("users")
+  role    Role    @relation(fields: [role_id], references: [id])
   role_id String
+  order   Order[]
+
+  @@unique([email])
+  @@map("users")
 }
 
+model ProductCategory {
+  id      String    @id @default(uuid())
+  name    String
+  product Product[]
+
+  @@map("product_category")
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String
+  price       String
+  description String
+  banner      String
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @default(now())
+
+  category    ProductCategory @relation(fields: [category_id], references: [id])
+  category_id String
+  item        OrderItem[]
+
+  @@map("products")
+}
+
+model Table {
+  id     String  @id @default(uuid())
+  number Int
+  orders Order[]
+
+  @@map("tables")
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  type       OrderType
+  status     OrderStatus
+  draft      Boolean     @default(true)
+  created_at DateTime?   @default(now())
+  updated_at DateTime?   @default(now())
+  address    String?
+  table      Table?      @relation(fields: [table_id], references: [id])
+  client     User?       @relation(fields: [client_id], references: [id])
+  item       OrderItem[]
+  table_id   String?
+  client_id  String?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String    @id @default(uuid())
+  amount     Int
+  name       String
+  draft      Boolean   @default(true)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  order      Order   @relation(fields: [order_id], references: [id])
+  product    Product @relation(fields: [product_id], references: [id])
+  order_id   String
+  product_id String
+
+  @@map("order_items")
+}
+
+enum OrderType {
+  TABLE
+  DELIVERY
+}
+
+enum OrderStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
