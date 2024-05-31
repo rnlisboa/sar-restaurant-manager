@@ -1,13 +1,16 @@
 import { hash } from "bcryptjs"
+import validator from 'validator';
 import { UserDTO } from "../dtos/user.dto";
 import prismaClient from "../../../prisma";
 
 class CreateUserService {
     async execute({...user}: UserDTO){
 
-
         if(!user.email || !user.password || !user.name || !user.lastname)
             throw new Error("Não é permitido campos vazios.");
+
+        if(!validator.isEmail(user.email))
+            throw new Error("Informe um e-mail válido.")
         
         const userAlreadyExists = await prismaClient.user.findFirst({
             where: {
@@ -24,8 +27,10 @@ class CreateUserService {
                 name: user.name,
                 lastname: user.lastname,
                 email: user.email,
-                is_admin: user.isAdmin,
                 password: passwordHash,
+                is_admin: user.isAdmin,
+                role_id: user.roleId,
+                profile_image: user.profileImage
             }
         })
 
