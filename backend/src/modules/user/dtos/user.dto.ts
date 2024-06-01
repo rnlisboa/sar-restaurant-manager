@@ -4,10 +4,10 @@ export interface UserDTO {
     lastname: string;
     email: string;
     password: string;
-    isAdmin: boolean;
-    isActive: boolean;
-    profileImage?: string;
+    is_admin: boolean;
+    is_active: boolean;
+    profile_image?: string;
     createdAt: Date;
     updatedAt: Date;
-    roleId: string;
+    role_id: string;
   }
