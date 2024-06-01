@@ -2,9 +2,15 @@ import { hash } from "bcryptjs"
 import validator from 'validator';
 import { UserDTO } from "../dtos/user.dto";
 import prismaClient from "../../../prisma";
+import { UserRepository } from "../Repository/UserRepository";
+import { PrismaClient, User } from "@prisma/client";
 
 class CreateUserService {
-    async execute({...user}: UserDTO){
+    readonly userRepository: UserRepository;
+    constructor(){
+        this.userRepository = new UserRepository(new PrismaClient);
+    }
+    async execute({...user}: User){
 
         if(!user.email || !user.password || !user.name || !user.lastname)
             throw new Error("Não é permitido campos vazios.");
@@ -12,27 +18,13 @@ class CreateUserService {
         if(!validator.isEmail(user.email))
             throw new Error("Informe um e-mail válido.")
         
-        const userAlreadyExists = await prismaClient.user.findFirst({
-            where: {
-                email: user.email
-            }
-        })
+        const userAlreadyExists = await this.userRepository.findFirst(user.email);
 
         if(userAlreadyExists) 
             throw new Error("Usuário com este email já existe.");
 
         const passwordHash = await hash(user.password, 8);
-        const userResponse = await prismaClient.user.create({
-            data: {
-                name: user.name,
-                lastname: user.lastname,
-                email: user.email,
-                password: passwordHash,
-                is_admin: user.isAdmin,
-                role_id: user.roleId,
-                profile_image: user.profileImage
-            }
-        })
+        const userResponse = await this.userRepository.createUser(user, passwordHash)
 
         return userResponse;
     }
