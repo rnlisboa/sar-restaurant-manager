@@ -1,5 +1,7 @@
 import express, { Request, Response, NextFunction }  from "express";
+import 'express-async-errors';
 import routes from "./routes";
+import path from "path"
 
 const app = express();
 
@@ -8,6 +10,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(routes);
+
+//acessar imagens
+app.use(
+    '/files',
+    express.static(path.resolve(__dirname, '..', 'tmp'))
+)
 
 //middleware para tratamento de erros
 app.use((err: Error, req: Request, res: Response, next: NextFunction)=>{
