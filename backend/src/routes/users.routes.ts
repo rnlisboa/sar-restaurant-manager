@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import CreateUserController from "../modules/user/controllers/CreateUserController";
+import CreateUserController from "../modules/user/Controllers/CreateUserController";
 import multerConfig from "../config/multer";
 import multer from "multer";
 const upload = multer(multerConfig.upload("./tmp"))
