@@ -3,9 +3,12 @@ import { IUserRepository } from "./IUserRepository";
 import prismaClient from "../../../prisma";
 
 export class UserRepository implements IUserRepository{
-    constructor(private readonly prisma: PrismaClient) {}
+    private readonly prisma: PrismaClient
+    constructor() {
+        this.prisma = prismaClient;
+    }
     async createUser(user: User, passwordHash: string): Promise<User>{
-        const newUser =  await prismaClient.user.create({
+        const newUser =  await this.prisma.user.create({
             data: {
                 name: user.name,
                 lastname: user.lastname,
@@ -20,7 +23,7 @@ export class UserRepository implements IUserRepository{
     };
     
     async findFirst(email: string): Promise<User | null>{
-        const user = await prismaClient.user.findFirst({
+        const user = await this.prisma.user.findFirst({
             where:{
                 email: email
             }

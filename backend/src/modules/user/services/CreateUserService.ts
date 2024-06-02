@@ -1,14 +1,12 @@
 import { hash } from "bcryptjs"
 import validator from 'validator';
-import { UserDTO } from "../dtos/user.dto";
-import prismaClient from "../../../prisma";
 import { UserRepository } from "../Repository/UserRepository";
-import { PrismaClient, User } from "@prisma/client";
+import {  User } from "@prisma/client";
 
 class CreateUserService {
     readonly userRepository: UserRepository;
     constructor(){
-        this.userRepository = new UserRepository(new PrismaClient);
+        this.userRepository = new UserRepository();
     }
     async execute({...user}: User){
 
