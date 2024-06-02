@@ -2,9 +2,10 @@ import { hash } from "bcryptjs"
 import validator from 'validator';
 import { UserRepository } from "../Repository/UserRepository";
 import {  User } from "@prisma/client";
+import { IUserRepository } from "../Repository/IUserRepository";
 
 class CreateUserService {
-    readonly userRepository: UserRepository;
+    readonly userRepository: IUserRepository;
     constructor(){
         this.userRepository = new UserRepository();
     }
