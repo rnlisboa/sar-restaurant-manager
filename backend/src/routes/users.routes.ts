@@ -1,14 +1,11 @@
 import { Router } from "express";
-
+import uploadConfig from "../config/multer"
 import CreateUserController from "../modules/user/Controllers/CreateUserController";
-import multerConfig from "../config/multer";
 import multer from "multer";
-const upload = multer(multerConfig.upload("./tmp"))
-const createUserController = new CreateUserController();
 
 const usersRouter = Router();
-
+const upload = multer(uploadConfig.upload('./tmp'))
 // Cadastra usuário
-usersRouter.post('/', createUserController.handle);
+usersRouter.post('/', upload.single('file'),new CreateUserController().handle);
 
 export default usersRouter;
