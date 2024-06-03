@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import UpdateUserService from '../Services/UpdateUserService';
+import HttpStatusCodes from '../../../http/httpStatus';
 
 class UpdateUserController {
     readonly updateUserService: UpdateUserService;
@@ -13,7 +14,7 @@ class UpdateUserController {
         const { ...userData } = req.body;
 
         const updatedUser = await this.updateUserService.execute(id, userData);
-        return res.status(200).json(updatedUser);
+        return res.status(HttpStatusCodes.OK).json(updatedUser);
 
     }
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import CreateRoleService from "../Services/CreateRoleService";
+import HttpStatusCodes from "../../../http/httpStatus";
 
 class CreateRoleController {
     private readonly createRoleService: CreateRoleService;
@@ -11,7 +12,7 @@ class CreateRoleController {
     async handle(req: Request, res: Response): Promise<Response> {
         const role = req.body;
         const newRole = await this.createRoleService.execute(role);
-        return res.status(201).json(newRole);
+        return res.status(HttpStatusCodes.CREATED).json(newRole);
     }
 }
 

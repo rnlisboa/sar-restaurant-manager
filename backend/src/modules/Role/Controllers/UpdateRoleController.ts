@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import UpdateRoleService from "../Services/UpdateRoleService";
+import HttpStatusCodes from "../../../http/httpStatus";
 
 class UpdateRoleController {
     private readonly updateRoleService: UpdateRoleService;
@@ -12,7 +13,7 @@ class UpdateRoleController {
         const { id } = req.params;
         const role = req.body;
         const updatedRole = await this.updateRoleService.execute(id, role);
-        return res.status(200).json(updatedRole);
+        return res.status(HttpStatusCodes.OK).json(updatedRole);
     }
 }
 

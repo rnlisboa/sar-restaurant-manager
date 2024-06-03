@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import CreateUserService from '../Services/CreateUserService';
+import HttpStatusCodes from '../../../http/httpStatus';
 
 class CreateUserController {
     readonly createUserService: CreateUserService;
@@ -15,7 +16,7 @@ class CreateUserController {
         }
 
         const userResponse = await this.createUserService.execute(user);
-        return res.json(userResponse).status(201);
+        return res.json(userResponse).status(HttpStatusCodes.CREATED);
     }
 }
 
