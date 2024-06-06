@@ -3,7 +3,7 @@ import { Category } from "@prisma/client";
 import { IRoleCategoryRepository } from "../RoleCategoryRepository/IRoleCategoryRepository";
 import { RoleCategoryRepository } from "../RoleCategoryRepository/RoleCategoryRepository";
 
-class RoleCategoryService {
+class CreateRoleCategoryService {
     private categoryRepository: IRoleCategoryRepository;
 
     constructor() {
@@ -17,4 +17,4 @@ class RoleCategoryService {
     }
 }
 
-export default RoleCategoryService;
+export default CreateRoleCategoryService;

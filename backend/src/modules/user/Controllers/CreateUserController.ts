@@ -3,19 +3,23 @@ import CreateUserService from '../Services/CreateUserService';
 import HttpStatusCodes from '../../../http/httpStatus';
 
 class CreateUserController {
-    readonly createUserService: CreateUserService;
-    
-    constructor(){
-        this.createUserService = new CreateUserService()
-    }
-    
     async handle(req: Request, res: Response) {
         const { ...user } = req.body;
+
+        const createUserService = new CreateUserService()
+
+
         if (req.file) {
             user.profile_image = req.file.filename;
         }
 
-        const userResponse = await this.createUserService.execute(user);
+        if(typeof user.is_admin === 'string'){
+            if(user.is_admin === 'false') user.is_admin = false;
+            else user.is_admin = true;
+        }
+
+        const userResponse = await createUserService.execute(user);
+        
         return res.json(userResponse).status(HttpStatusCodes.CREATED);
     }
 }
