@@ -1,6 +1,5 @@
 import { Router } from "express";
-import CreateRoleCategoryController from "../modules/RoleCategory/controllers/CreateRoleCategoryController";
-
+import CreateRoleCategoryController from "../modules/RoleCategory/Controllers/CreateRoleCategoryController";
 const roleCategoryRoutes = Router();
 // Cadastra categoria
 roleCategoryRoutes.post('/', new CreateRoleCategoryController().handle);
